@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_PASSWORD: ${PASSWORD_PG}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     networks:
       - compose-net
   db_repl:
@@ -18,7 +18,7 @@ services:
     env_file:
       - .env
     environment:
-      POSTGRES_PASSWORD: ${PASSWORD_PG}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     networks:
       - compose-net
     depends_on:

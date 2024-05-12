@@ -4,8 +4,6 @@ import telebot
 import re
 import logging
 import os
-from dotenv import load_dotenv
-from pathlib import Path
 from psycopg2 import Error
 
 # Инициализация логирования
@@ -16,17 +14,18 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Учетные данные сервера
-host = os.getenv('HOST')
-port = os.getenv('PORT')
-username = os.getenv('USER')
-password = os.getenv('PASSWORD')
+host = os.getenv('RM_HOST')
+port = os.getenv('RM_PORT')
+username = os.getenv('RM_USER')
+password = os.getenv('RM_PASSWORD')
 
 # Учетные данные для бд
-host_pg = os.getenv('HOST_PG')
-port_pg = os.getenv('PORT_PG')
-username_pg = os.getenv('USER_PG')
-password_pg = os.getenv('PASSWORD_PG')
-db_pg = os.getenv('DB_PG')
+host_pg = os.getenv('DB_HOST')
+port_pg = os.getenv('DB_PORT')
+username_pg = os.getenv('DB_USER')
+password_pg = os.getenv('DB_PASSWORD')
+db = os.getenv('DB_DATABASE')
+db_repl_user = os.getenv('DB_REPL_USER')
 
 # Токен ТГ
 TOKEN = os.getenv('TOKEN')
@@ -56,7 +55,7 @@ def dbExec(command, data=None):
                                       password=password_pg,
                                       host=host_pg,
                                       port=port_pg,
-                                      database=db_pg)
+                                      database=db)
         cursor = connection.cursor()
         if data:
             for d in data:
@@ -291,7 +290,7 @@ def get_repl_logs(message):
         '\\n', '\n').replace('\\t', '\t')[2:-1]
     answer = 'Логи репликации:\n'
     for str in data.split('\n'):
-        if 'repl_user' in str:
+        if db_repl_user in str:
             answer += str + '\n'
     if len(answer) == 17:
         answer = 'События репликации не обнаружены'

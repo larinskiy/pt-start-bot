@@ -14,16 +14,16 @@ For this bot to work, you need to create a .env file and put the following varia
 
 `PASSWORD`=SSH user password on the monitoring host
 
-`PASSWORD_REPL`=The user's password for replication
+`DB_REPL_PASSWORD`=The user's password for replication
 
-`HOST_PG`=Database IP address
+`DB_HOST`=Database IP address
 
-`PORT_PG`=Database port
+`DB_PORT`=Database port
 
-`USER_PG`=Database User
+`DB_USER`=Database User
 
-`PASSWORD_PG`=Password of the database user
+`DB_PASSWORD`=Password of the database user
 
-`DB_PG`=Name of the database
+`DB_DATABASE`=Name of the database
 
 `TOKEN`=A token for a telegram bot

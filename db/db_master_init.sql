@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS Phones (
 );
 
 INSERT INTO Phones (PhoneID, Phone) VALUES
-(1, '88005555555'),
-(2, '84990519301');
+(DEFAULT, '88005555555'),
+(DEFAULT, '84990519301');
 
 CREATE TABLE IF NOT EXISTS Emails (
     EmailID SERIAL PRIMARY KEY,
@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS Emails (
 );
 
 INSERT INTO Emails (EmailID, Email) VALUES
-(1, 'first@email.com'),
-(2, 'second@email.com');
+(DEFAULT, 'first@email.com'),
+(DEFAULT, 'second@email.com');
 
