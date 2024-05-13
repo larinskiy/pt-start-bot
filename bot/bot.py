@@ -286,7 +286,7 @@ def services(message):
 
 @bot.message_handler(commands=['get_repl_logs'])
 def get_repl_logs(message):
-    data = dbExec("SELECT pg_read_file(PG_current_logfile());")[0][0].replace(
+    data = dbExec("SELECT pg_read_file(pg_current_logfile());")[0][0].replace(
         '\\n', '\n').replace('\\t', '\t')[2:-1]
     answer = 'Логи репликации:\n'
     for str in data.split('\n'):

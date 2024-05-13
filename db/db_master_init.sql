@@ -15,4 +15,3 @@ CREATE TABLE IF NOT EXISTS Emails (
 INSERT INTO Emails (EmailID, Email) VALUES
 (DEFAULT, 'first@email.com'),
 (DEFAULT, 'second@email.com');
-
