@@ -3,11 +3,12 @@
     - name: Install PostgreSQL, Python, Git
       become: yes
       apt:
-        name: postgresql
-        name: pg_ctlcluster
-        name: python
-        name: git
-        state: present
+        name: 
+          - postgresql
+          - python
+          - git
+        state: latest
+        update_cache: true
       
     - name: Clone project from GitHub
       git:
@@ -21,26 +22,30 @@
         dest: /tmp/pt-start-bot/
         mode: 0744
 
-    - name: Export environment file for bot
-      command: /bin/bash -c "export $(cat /tmp/pt-start-bot/.env | xargs)"
-
-    - name: Export environment file for postgres
-      become: yes
-      become_user: postgres
-      command: /bin/bash -c "export $(cat /tmp/pt-start-bot/.env | xargs)"
-
     - name: Allow execute init for postgres
       file:
         path: /tmp/pt-start-bot/db/db_master_init.sh
         state: file
         mode: 0755
 
-    - name: Postgresql initialize
+    - name: Rename and move db_master_init.sql
+      become: yes
+      copy: remote_src=True src=/tmp/pt-start-bot/db/db_master_init.sql dest=/init.sql
+
+    - name: Allow read init.sql for postgres
+      become: yes
+      file:
+        path: /tmp/pt-start-bot/db/db_master_init.sql
+        state: file
+        mode: 0744
+
+    - name: Export environment file for postgres and init
       become: yes
       become_user: postgres
-      command: /tmp/pt-start-bot/db/db_master_init.sh
-      args:
-        chdir: /tmp/pt-start-bot/db
+      shell: export $(cat /tmp/pt-start-bot/.env | xargs) && /tmp/pt-start-bot/db/db_master_init.sh
+
+    - name: Export environment file for bot
+      shell: export $(cat /tmp/pt-start-bot/.env | xargs)
     
     - name: Install requirements with pip
       command: pip install -r /tmp/pt-start-bot/requirements.txt
