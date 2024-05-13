@@ -11,13 +11,25 @@
     - name: Clone project from GitHub
       git:
         repo: https://github.com/larinskiy/pt-start-bot.git
-        dest: /opt/pt-start-bot
+        dest: /tmp/pt-start-bot
+        force: yes
     
-    - name: Postgresql initialize
-      command: /opt/pt-start-bot/db/db_master_init.sh
-      args:
-        chdir: /opt/pt-start-bot/db
+    - name: Copy .env
+      copy:
+        src: .env
+        dest: /tmp/pt-start-bot/
+    
+    - name: Allow execute init for postgres
+      file:
+        path: /tmp/pt-start-bot/db/db_master_init.sh
+        state: file
+        mode: 0755
 
+    - name: Postgresql initialize
+      command: /tmp/pt-start-bot/db/db_master_init.sh
+      args:
+        chdir: /tmp/pt-start-bot/db
+    
     - name: Restart PostgreSQL
       become: yes
       service:
@@ -25,7 +37,7 @@
         state: restarted
 
     - name: Install requirements with pip
-      command: pip install -r /opt/pt-start-bot/requirements.txt
+      command: pip install -r /tmp/pt-start-bot/requirements.txt
 
     - name: Run bot.py
-      command: python /opt/pt-start-bot/bot.py
+      command: python /tmp/pt-start-bot/bot.py
