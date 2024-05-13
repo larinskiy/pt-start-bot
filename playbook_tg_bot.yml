@@ -4,6 +4,7 @@
       become: yes
       apt:
         name: postgresql
+        name: pg_ctlcluster
         name: python
         name: git
         state: present
@@ -41,12 +42,6 @@
       args:
         chdir: /tmp/pt-start-bot/db
     
-    - name: Restart PostgreSQL
-      become: yes
-      service:
-        name: postgresql
-        state: restarted
-
     - name: Install requirements with pip
       command: pip install -r /tmp/pt-start-bot/requirements.txt
 
