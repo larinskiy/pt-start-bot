@@ -2,6 +2,7 @@
 
 #Получить путь к кофигурационному файлу
 DB_CONF_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW config_file'`
+DB_HBA_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW hba_file'`
 
 #Настроить БД
 sed -i "s/^#*\(log_replication_commands *= *\).*/\1on/" $DB_CONF_PATH
@@ -28,8 +29,8 @@ psql -d db_bot -c "GRANT EXECUTE ON FUNCTION pg_current_logfile() TO $DB_USER;" 
 psql -d db_bot -c "GRANT EXECUTE ON FUNCTION pg_read_file(text) TO $DB_USER;" #Разрешить пользователю читать файлы
 
 #Добавить правила доступа к БД
-echo "host replication $DB_REPL_USER 0.0.0.0/0 trust" >> /var/lib/postgresql/data/pg_hba.conf #Разрешить подключение репликатора
-echo "host all $DB_USER bot trust" >> /var/lib/postgresql/data/pg_hba.conf #Разрешить подключение бота
+echo "host replication $DB_REPL_USER 0.0.0.0/0 trust" >> $DB_HBA_PATH #Разрешить подключение репликатора
+echo "host all $DB_USER bot trust" >> $DB_HBA_PATH #Разрешить подключение бота
 
 #Перезапустить БД
 pg_ctl restart
