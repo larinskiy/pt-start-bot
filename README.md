@@ -27,3 +27,5 @@ For this bot to work, you need to create a .env file and put the following varia
 `DB_DATABASE`=Name of the database
 
 `TOKEN`=A token for a telegram bot
+
+To run playbook create .env file in the same directory, as a playbook.
