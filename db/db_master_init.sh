@@ -12,7 +12,7 @@ DB_DATA_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW 
 #Настроить БД
 sed -i "s/^#*\(log_replication_commands *= *\).*/\1on/" $DB_CONF_PATH
 sed -i "s/^#*\(archive_mode *= *\).*/\1on/" $DB_CONF_PATH
-sed -i "s|^#*\(archive_command *= *\).*|\1'cp %p /pg_data/archive/%f'|" $DB_CONF_PATH
+sed -i "s|^#*\(archive_command *= *\).*|\1'cp %p /tmp/archive/%f'|" $DB_CONF_PATH
 sed -i "s/^#*\(max_wal_senders *= *\).*/\110/" $DB_CONF_PATH
 sed -i "s/^#*\(wal_level *= *\).*/\1replica/" $DB_CONF_PATH
 sed -i "s/^#*\(wal_log_hints *= *\).*/\1on/" $DB_CONF_PATH
@@ -21,7 +21,7 @@ sed -i -e"s/^#log_filename = 'postgresql-\%Y-\%m-\%d_\%H\%M\%S.log'.*$/log_filen
 sed -i "s/#log_line_prefix = '%m \[%p\] '/log_line_prefix = '%m [%p] %q%u@%d '/g" $DB_CONF_PATH
 
 #Создать каталог архивирования
-mkdir -p /pg_data/archive
+mkdir -p /tmp/archive
 
 psql -c "CREATE USER $DB_REPL_USER WITH REPLICATION LOGIN PASSWORD '$DB_REPL_PASSWORD';" #Создать пользователя репликатора
 psql -c "CREATE DATABASE $DB_DATABASE;" #Создать пользователя репликатора
