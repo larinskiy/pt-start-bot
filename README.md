@@ -6,15 +6,13 @@ You can use it as bot.py to work on the host, both Dockerfile or docker-compose.
 
 For this bot to work, you need to create a .env file and put the following variables in it:
 
-`HOST`=IP of the monitoring host
+`RM_HOST`=IP of the monitoring host
 
-`PORT`=Host port for monitoring
+`RM_PORT`=Host port for monitoring
 
-`USER`=SSH user on the monitoring host
+`RM_USER`=SSH user on the monitoring host
 
-`PASSWORD`=SSH user password on the monitoring host
-
-`DB_REPL_PASSWORD`=The user's password for replication
+`RM_PASSWORD`=SSH user password on the monitoring host
 
 `DB_HOST`=Database IP address
 
@@ -25,6 +23,14 @@ For this bot to work, you need to create a .env file and put the following varia
 `DB_PASSWORD`=Password of the database user
 
 `DB_DATABASE`=Name of the database
+
+`DB_REPL_USER`=The user's login for replication
+
+`DB_REPL_PASSWORD`=The user's password for replication
+
+`DB_REPL_HOST`=The host allowed to replicate
+
+`DB_REPL_PORT`=The host's port allowed to replicate
 
 `TOKEN`=A token for a telegram bot
 
