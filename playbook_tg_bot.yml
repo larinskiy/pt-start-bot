@@ -13,12 +13,21 @@
         repo: https://github.com/larinskiy/pt-start-bot.git
         dest: /tmp/pt-start-bot
         force: yes
-    
-    - name: Copy .env
+
+    - name: Copy .env 
       copy:
         src: .env
         dest: /tmp/pt-start-bot/
-    
+        mode: 0744
+
+    - name: Export environment file for bot
+      command: /bin/bash -c "export $(cat /tmp/pt-start-bot/.env | xargs)"
+
+    - name: Export environment file for postgres
+      become: yes
+      become_user: postgres
+      command: /bin/bash -c "export $(cat /tmp/pt-start-bot/.env | xargs)"
+
     - name: Allow execute init for postgres
       file:
         path: /tmp/pt-start-bot/db/db_master_init.sh
@@ -26,6 +35,8 @@
         mode: 0755
 
     - name: Postgresql initialize
+      become: yes
+      become_user: postgres
       command: /tmp/pt-start-bot/db/db_master_init.sh
       args:
         chdir: /tmp/pt-start-bot/db
