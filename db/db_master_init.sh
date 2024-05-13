@@ -6,6 +6,8 @@ DB_BIN_PATH=`pg_config --bindir`
 #Получить путь к кофигурационным файлам
 DB_CONF_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW config_file'`
 DB_HBA_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW hba_file'`
+DB_DATA_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW data_directory'`
+
 
 #Настроить БД
 sed -i "s/^#*\(log_replication_commands *= *\).*/\1on/" $DB_CONF_PATH
@@ -36,4 +38,4 @@ echo "host replication $DB_REPL_USER 0.0.0.0/0 trust" >> $DB_HBA_PATH #Разр�
 echo "host all $DB_USER bot trust" >> $DB_HBA_PATH #Разрешить подключение бота
 
 #Перезапустить БД
-/$DB_BIN_PATH/pg_ctl restart
+/$DB_BIN_PATH/pg_ctl restart -D $DB_DATA_PATH
