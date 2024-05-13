@@ -1,0 +1,31 @@
+- hosts: all
+  tasks:
+    - name: Install PostgreSQL, Python, Git
+      become: yes
+      apt:
+        name: postgresql
+        name: python
+        name: git
+        state: present
+      
+    - name: Clone project from GitHub
+      git:
+        repo: https://github.com/larinskiy/pt-start-bot.git
+        dest: /opt/pt-start-bot
+    
+    - name: Postgresql initialize
+      command: /opt/pt-start-bot/db/db_master_init.sh
+      args:
+        chdir: /opt/pt-start-bot/db
+
+    - name: Restart PostgreSQL
+      become: yes
+      service:
+        name: postgresql
+        state: restarted
+
+    - name: Install requirements with pip
+      command: pip install -r /opt/pt-start-bot/requirements.txt
+
+    - name: Run bot.py
+      command: python /opt/pt-start-bot/bot.py
