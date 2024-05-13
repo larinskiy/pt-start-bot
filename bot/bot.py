@@ -266,8 +266,8 @@ def apt_list(message):
         for x in range(0, len(result), 4096):
             bot.send_message(message.chat.id, result[x:x+4096])
     else:
-        result = paramikoExec(f'apt info {message.text.split()[
-                              1].replace('&', '').replace(';', '')}')
+        request = message.text.split()[1].replace('&', '').replace(';', '')
+        result = paramikoExec(f'apt info {request}')
         print(f'apt info {message.text.split()[1:]}')
         for x in range(0, len(result), 4096):
             bot.send_message(message.chat.id, result[x:x+4096])
