@@ -1,6 +1,9 @@
 #!/bin/bash
 
-#Получить путь к кофигурационному файлу
+#Получить путь к испоняемым файлам
+DB_BIN_PATH=`pg_config --bindir`
+
+#Получить путь к кофигурационным файлам
 DB_CONF_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW config_file'`
 DB_HBA_PATH=`psql -U postgres --no-align --quiet --tuples-only --command='SHOW hba_file'`
 
@@ -33,4 +36,4 @@ echo "host replication $DB_REPL_USER 0.0.0.0/0 trust" >> $DB_HBA_PATH #Разр�
 echo "host all $DB_USER bot trust" >> $DB_HBA_PATH #Разрешить подключение бота
 
 #Перезапустить БД
-pg_ctl restart
+/$DB_BIN_PATH/pg_ctl restart
